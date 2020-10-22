@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/stretchr/objx"
 	"github.com/urfave/cli/v2"
 	"gopkg.in/yaml.v2"
 )
@@ -256,26 +257,117 @@ func main() {
 
 					// Iterate through user list and retrieve the CP Policy for each
 					for i := 0; i < len(users); i++ {
-						fmt.Print(cl.userCallProcessingGetPolicyRequest21Sp1(users[i]))
+
+						userProfile := cl.userCallProcessingGetPolicyRequest21Sp1(users[i])
+
+						fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+							users[i],
+							userProfile["UseUserCallLimitsSetting"],
+							userProfile["UseMaxSimultaneousCalls"],
+							userProfile["MaxSimultaneousCalls"],
+							userProfile["UseMaxSimultaneousVideoCalls"],
+							userProfile["MaxSimultaneousVideoCalls"],
+							userProfile["UseMaxCallTimeForAnsweredCalls"],
+							userProfile["MaxCallTimeForAnsweredCallsMinutes"],
+							userProfile["UseMaxCallTimeForUnansweredCalls"],
+							userProfile["MaxCallTimeForUnansweredCallsMinutes"],
+							userProfile["UseMaxConcurrentRedirectedCalls"],
+							userProfile["MaxConcurrentRedirectedCalls"],
+							userProfile["UseMaxConcurrentFindMeFollowMeInvocations"],
+							userProfile["MaxConcurrentFindMeFollowMeInvocations"],
+							userProfile["UseMaxFindMeFollowMeDepth"],
+							userProfile["MaxFindMeFollowMeDepth"],
+							userProfile["MaxRedirectionDepth"],
+						)
+
 					}
 
 					if c.Bool("include") {
 						if c.Bool("header") {
-							fmt.Println("enterprise,n/a,useMaxSimultaneousCalls,maxSimultaneousCalls,useMaxSimultaneousVideoCalls," +
-								"maxSimultaneousVideoCalls,useMaxCallTimeForAnsweredCalls,maxCallTimeForAnsweredCallsMinutes,useMaxCallTimeForUnansweredCalls," +
-								"maxCallTimeForUnansweredCallsMinutes,useMaxConcurrentRedirectedCalls,maxConcurrentRedirectedCalls,useMaxFindMeFollowMeDepth," +
-								"maxFindMeFollowMeDepth,maxRedirectionDepth,useMaxConcurrentFindMeFollowMeInvocations,maxConcurrentFindMeFollowMeInvocations",
+							fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+								"enterprise",
+								"useMaxSimultaneousCalls",
+								"maxSimultaneousCalls",
+								"useMaxSimultaneousVideoCalls",
+								"maxSimultaneousVideoCalls",
+								"useMaxCallTimeForAnsweredCalls",
+								"maxCallTimeForAnsweredCallsMinutes",
+								"useMaxCallTimeForUnansweredCalls",
+								"maxCallTimeForUnansweredCallsMinutes",
+								"useMaxConcurrentRedirectedCalls",
+								"maxConcurrentRedirectedCalls",
+								"useMaxFindMeFollowMeDepth",
+								"maxFindMeFollowMeDepth",
+								"maxRedirectionDepth",
+								"useMaxConcurrentFindMeFollowMeInvocations",
+								"maxConcurrentFindMeFollowMeInvocations",
 							)
 						}
-						fmt.Print(cl.serviceProviderCallProcessingGetPolicyRequest21Sp1(c.String("enterprise")))
+						entProfile := cl.serviceProviderCallProcessingGetPolicyRequest21Sp1(c.String("enterprise"))
+						fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+							c.String("enterprise"),
+							entProfile["UseMaxSimultaneousCalls"],
+							entProfile["MaxSimultaneousCalls"],
+							entProfile["UseMaxSimultaneousVideoCalls"],
+							entProfile["MaxSimultaneousVideoCalls"],
+							entProfile["UseMaxCallTimeForAnsweredCalls"],
+							entProfile["MaxCallTimeForAnsweredCallsMinutes"],
+							entProfile["UseMaxCallTimeForUnansweredCall"],
+							entProfile["MaxCallTimeForUnansweredCallsMinutes"],
+							entProfile["UseMaxConcurrentRedirectedCalls"],
+							entProfile["MaxConcurrentRedirectedCalls"],
+							entProfile["UseMaxConcurrentFindMeFollowMeInvocations"],
+							entProfile["MaxConcurrentFindMeFollowMeInvocations"],
+							entProfile["UseMaxFindMeFollowMeDepth"],
+							entProfile["MaxFindMeFollowMeDepth"],
+							entProfile["MaxRedirectionDepth"],
+						)
+
+						//fmt.Print(cl.serviceProviderCallProcessingGetPolicyRequest21Sp1(c.String("enterprise")))
 						if c.Bool("header") {
-							fmt.Println("enterprise-group,useUserGroupLimitsSetting, useMaxSimultaneousCalls,maxSimultaneousCalls,useMaxSimultaneousVideoCalls," +
-								"maxSimultaneousVideoCalls,useMaxCallTimeForAnsweredCalls,maxCallTimeForAnsweredCallsMinutes,useMaxCallTimeForUnansweredCalls," +
-								"maxCallTimeForUnansweredCallsMinutes,useMaxConcurrentRedirectedCalls,maxConcurrentRedirectedCalls,useMaxFindMeFollowMeDepth," +
-								"maxFindMeFollowMeDepth,maxRedirectionDepth,useMaxConcurrentFindMeFollowMeInvocations,maxConcurrentFindMeFollowMeInvocations",
+							fmt.Printf("%v-%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+								"enterprise",
+								"group",
+								"useUserGroupLimitsSetting",
+								"useMaxSimultaneousCalls",
+								"maxSimultaneousCalls",
+								"useMaxSimultaneousVideoCalls",
+								"maxSimultaneousVideoCalls",
+								"useMaxCallTimeForAnsweredCalls",
+								"maxCallTimeForAnsweredCallsMinutes",
+								"useMaxCallTimeForUnansweredCalls",
+								"maxCallTimeForUnansweredCallsMinutes",
+								"useMaxConcurrentRedirectedCalls",
+								"maxConcurrentRedirectedCalls",
+								"useMaxFindMeFollowMeDepth",
+								"maxFindMeFollowMeDepth",
+								"maxRedirectionDepth",
+								"useMaxConcurrentFindMeFollowMeInvocations",
+								"maxConcurrentFindMeFollowMeInvocations",
 							)
 						}
-						fmt.Print(cl.groupCallProcessingGetPolicyRequest21Sp1(c.String("enterprise"), c.String("group")))
+						groupProfile := cl.groupCallProcessingGetPolicyRequest21Sp1(c.String("enterprise"), c.String("group"))
+						fmt.Printf("%v-%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+							c.String("enterprise"),
+							c.String("group"),
+							groupProfile["UseGroupCallLimitsSetting"],
+							groupProfile["UseMaxSimultaneousCall"],
+							groupProfile["MaxSimultaneousCalls"],
+							groupProfile["UseMaxSimultaneousVideoCalls"],
+							groupProfile["MaxSimultaneousVideoCalls"],
+							groupProfile["UseMaxCallTimeForAnsweredCall"],
+							groupProfile["MaxCallTimeForAnsweredCallsMinutes"],
+							groupProfile["UseMaxCallTimeForUnansweredCalls"],
+							groupProfile["MaxCallTimeForUnansweredCallsMinute"],
+							groupProfile["UseMaxConcurrentRedirectedCalls"],
+							groupProfile["MaxConcurrentRedirectedCalls"],
+							groupProfile["UseMaxConcurrentFindMeFollowMeInvocation"],
+							groupProfile["MaxConcurrentFindMeFollowMeInvocations"],
+							groupProfile["UseMaxFindMeFollowMeDepth"],
+							groupProfile["MaxFindMeFollowMeDepth"],
+							groupProfile["MaxRedirectionDep"],
+						)
+
 					}
 					return nil
 				},
@@ -370,24 +462,74 @@ func main() {
 
 						// print header if flagged
 						if c.Bool("header") {
-							fmt.Println("deviceType,deviceName,macAddress,useCustomUserNamePassword,UserName,version,userId,linePort,lastName,firstName,phoneNumber,extension")
+							if c.Bool("detail") {
+								fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+									"deviceType",
+									"deviceName",
+									"macAddress",
+									"useCustomUserNamePassword",
+									"UserName",
+									"version",
+									"userId",
+									"linePort",
+									"lastName",
+									"firstName",
+									"phoneNumber",
+									"extension",
+								)
+							} else {
+								fmt.Printf("%v,%v,%v,%v,%v,%v\n",
+									"deviceType",
+									"deviceName",
+									"macAddress",
+									"useCustomUserNamePassword",
+									"UserName",
+									"version",
+								)
+							}
+
 						}
 
 						// loop thru each device and print details
 						for i := 0; i < len(devices); i++ {
 
 							deviceName := devices[i][0]
-							deviceType, macAddress, UseCustomUserNamePassword, userName, version := cl.GroupAccessDeviceGetRequest18sp1(c.String("enterprise"), c.String("group"), deviceName)
+							deviceProfile := cl.GroupAccessDeviceGetRequest18sp1(c.String("enterprise"), c.String("group"), deviceName)
+							deviceType := deviceProfile["deviceType"]
+							macAddress := deviceProfile["macAddress"]
+							UseCustomUserNamePassword := deviceProfile["useCustomUserNamePassword"]
+							userName := deviceProfile["userName"]
+							version := deviceProfile["version"]
 
 							if c.Bool("detail") {
 
 								// retrieve lines information
 								lines := cl.GroupAccessDeviceGetUserListRequest21sp1(c.String("enterprise"), c.String("group"), deviceName)
-								fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n", deviceType, deviceName, macAddress, UseCustomUserNamePassword, userName, version, lines["userID"], lines["linePort"], lines["lastName"], lines["firstName"], lines["phoneNumber"], lines["extension"])
+								fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+									deviceType,
+									deviceName,
+									macAddress,
+									UseCustomUserNamePassword,
+									userName,
+									version,
+									lines["userID"],
+									lines["linePort"],
+									lines["lastName"],
+									lines["firstName"],
+									lines["phoneNumber"],
+									lines["extension"],
+								)
 
 							} else {
 
-								fmt.Printf("%v,%v,%v,%v,%v,%v\n", deviceType, deviceName, macAddress, UseCustomUserNamePassword, userName, version)
+								fmt.Printf("%v,%v,%v,%v,%v,%v\n",
+									deviceType,
+									deviceName,
+									macAddress,
+									UseCustomUserNamePassword,
+									userName,
+									version,
+								)
 
 							}
 						}
@@ -484,22 +626,56 @@ func main() {
 					users := cl.UserGetListInGroupRequest(c.String("enterprise"), c.String("group"))
 
 					if c.Bool("header") {
-						fmt.Println("user,serviceAssigned,isActive,forwardToPhoneNumber")
+						fmt.Printf("%v,%v,%v,%v\n",
+							"user",
+							"serviceAssigned",
+							"isActive",
+							"forwardToPhoneNumber",
+						)
 					}
 
 					if c.Bool("active") {
 						for i := 0; i < len(users); i++ {
-							user, serviceAssigned, isActive, forwardToPhoneNumber := cl.UserCallForwardingAlwaysGetRequest(users[i])
+
+							cfaSettings := cl.UserCallForwardingAlwaysGetRequest(users[i])
+
+							// Create objx to convert some values to bool
+							o := objx.New(cfaSettings)
+
+							serviceAssigned := o.Get("serviceAssigned").Bool()
+							isActive := o.Get("isActive").Bool()
+							forwardToPhoneNumber := cfaSettings["forwardToPhoneNumber"]
+							user := users[i]
+
 							if isActive {
-								fmt.Printf("%v,%v,%v,%v\n", user, serviceAssigned, isActive, forwardToPhoneNumber)
+								fmt.Printf("%v,%v,%v,%v\n",
+									user,
+									serviceAssigned,
+									isActive,
+									forwardToPhoneNumber,
+								)
 							}
 						}
 						return nil
 					}
 
 					for i := 0; i < len(users); i++ {
-						user, serviceAssigned, isActive, forwardToPhoneNumber := cl.UserCallForwardingAlwaysGetRequest(users[i])
-						fmt.Printf("%v,%v,%v,%v\n", user, serviceAssigned, isActive, forwardToPhoneNumber)
+
+						cfaSettings := cl.UserCallForwardingAlwaysGetRequest(users[i])
+
+						o := objx.New(cfaSettings)
+
+						serviceAssigned := o.Get("serviceAssigned").Bool()
+						isActive := o.Get("isActive").Bool()
+						forwardToPhoneNumber := cfaSettings["forwardToPhoneNumber"]
+						user := users[i]
+
+						fmt.Printf("%v,%v,%v,%v\n",
+							user,
+							serviceAssigned,
+							isActive,
+							forwardToPhoneNumber,
+						)
 					}
 					return nil
 				},

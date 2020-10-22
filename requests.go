@@ -247,7 +247,7 @@ func (c *client) loginRequest14sp4() error {
 }
 
 // ServiceProviderCallProcessingGetPolicyRequest21Sp1 Get Enterprise1
-func (c client) serviceProviderCallProcessingGetPolicyRequest21Sp1(enterprise string) string {
+func (c client) serviceProviderCallProcessingGetPolicyRequest21Sp1(enterprise string) map[string]interface{} {
 
 	data := `<command xmlns="" xsi:type="ServiceProviderCallProcessingGetPolicyRequest21sp1">`
 	data += fmt.Sprintf(`<serviceProviderId>%s</serviceProviderId>`, enterprise)
@@ -277,11 +277,25 @@ func (c client) serviceProviderCallProcessingGetPolicyRequest21Sp1(enterprise st
 		panic(err)
 	}
 
-	return fmt.Sprintf("%v,n/a,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n", enterprise, parsed.Command.UseMaxSimultaneousCalls,
-		parsed.Command.MaxSimultaneousCalls, parsed.Command.UseMaxSimultaneousVideoCalls, parsed.Command.MaxSimultaneousVideoCalls, parsed.Command.UseMaxCallTimeForAnsweredCalls,
-		parsed.Command.MaxCallTimeForAnsweredCallsMinutes, parsed.Command.UseMaxCallTimeForUnansweredCalls, parsed.Command.MaxCallTimeForUnansweredCallsMinutes,
-		parsed.Command.UseMaxConcurrentRedirectedCalls, parsed.Command.MaxConcurrentRedirectedCalls, parsed.Command.UseMaxConcurrentFindMeFollowMeInvocations,
-		parsed.Command.MaxConcurrentFindMeFollowMeInvocations, parsed.Command.UseMaxFindMeFollowMeDepth, parsed.Command.MaxFindMeFollowMeDepth, parsed.Command.MaxRedirectionDepth)
+	profile := make(map[string]interface{})
+
+	profile["UseMaxSimultaneousCalls"] = parsed.Command.UseMaxSimultaneousCalls
+	profile["MaxSimultaneousCalls"] = parsed.Command.MaxSimultaneousCalls
+	profile["UseMaxSimultaneousVideoCalls"] = parsed.Command.UseMaxSimultaneousVideoCalls
+	profile["MaxSimultaneousVideoCalls"] = parsed.Command.MaxSimultaneousVideoCalls
+	profile["UseMaxCallTimeForAnsweredCalls"] = parsed.Command.UseMaxCallTimeForAnsweredCalls
+	profile["MaxCallTimeForAnsweredCallsMinutes"] = parsed.Command.MaxCallTimeForAnsweredCallsMinutes
+	profile["UseMaxCallTimeForUnansweredCall"] = parsed.Command.UseMaxCallTimeForUnansweredCalls
+	profile["MaxCallTimeForUnansweredCallsMinutes"] = parsed.Command.MaxCallTimeForUnansweredCallsMinutes
+	profile["UseMaxConcurrentRedirectedCalls"] = parsed.Command.UseMaxConcurrentRedirectedCalls
+	profile["MaxConcurrentRedirectedCalls"] = parsed.Command.MaxConcurrentRedirectedCalls
+	profile["UseMaxConcurrentFindMeFollowMeInvocations"] = parsed.Command.UseMaxConcurrentFindMeFollowMeInvocations
+	profile["MaxConcurrentFindMeFollowMeInvocations"] = parsed.Command.MaxConcurrentFindMeFollowMeInvocations
+	profile["UseMaxFindMeFollowMeDepth"] = parsed.Command.UseMaxFindMeFollowMeDepth
+	profile["MaxFindMeFollowMeDepth"] = parsed.Command.MaxFindMeFollowMeDepth
+	profile["MaxRedirectionDepth"] = parsed.Command.MaxRedirectionDepth
+
+	return profile
 }
 
 // ServiceProviderCallProcessingModifyPolicyRequest15 Set Enterprise
@@ -289,7 +303,7 @@ func (c client) serviceProviderCallProcessingModifyPolicyRequest15() {
 }
 
 // GroupCallProcessingGetPolicyRequest21Sp1 Get Group
-func (c client) groupCallProcessingGetPolicyRequest21Sp1(enterprise, group string) string {
+func (c client) groupCallProcessingGetPolicyRequest21Sp1(enterprise, group string) map[string]interface{} {
 
 	data := `<command xmlns="" xsi:type="GroupCallProcessingGetPolicyRequest21sp1">`
 	data += fmt.Sprintf(`<serviceProviderId>%s</serviceProviderId>`, enterprise)
@@ -320,11 +334,26 @@ func (c client) groupCallProcessingGetPolicyRequest21Sp1(enterprise, group strin
 		panic(err)
 	}
 
-	return fmt.Sprintf("%v-%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n", enterprise, group, parsed.Command.UseGroupCallLimitsSetting, parsed.Command.UseMaxSimultaneousCalls,
-		parsed.Command.MaxSimultaneousCalls, parsed.Command.UseMaxSimultaneousVideoCalls, parsed.Command.MaxSimultaneousVideoCalls, parsed.Command.UseMaxCallTimeForAnsweredCalls,
-		parsed.Command.MaxCallTimeForAnsweredCallsMinutes, parsed.Command.UseMaxCallTimeForUnansweredCalls, parsed.Command.MaxCallTimeForUnansweredCallsMinutes,
-		parsed.Command.UseMaxConcurrentRedirectedCalls, parsed.Command.MaxConcurrentRedirectedCalls, parsed.Command.UseMaxConcurrentFindMeFollowMeInvocations,
-		parsed.Command.MaxConcurrentFindMeFollowMeInvocations, parsed.Command.UseMaxFindMeFollowMeDepth, parsed.Command.MaxFindMeFollowMeDepth, parsed.Command.MaxRedirectionDepth)
+	profile := make(map[string]interface{})
+
+	profile["UseGroupCallLimitsSetting"] = parsed.Command.UseGroupCallLimitsSetting
+	profile["UseMaxSimultaneousCall"] = parsed.Command.UseMaxSimultaneousCalls
+	profile["MaxSimultaneousCalls"] = parsed.Command.MaxSimultaneousCalls
+	profile["UseMaxSimultaneousVideoCalls"] = parsed.Command.UseMaxSimultaneousVideoCalls
+	profile["MaxSimultaneousVideoCalls"] = parsed.Command.MaxSimultaneousVideoCalls
+	profile["UseMaxCallTimeForAnsweredCall"] = parsed.Command.UseMaxCallTimeForAnsweredCalls
+	profile["MaxCallTimeForAnsweredCallsMinutes"] = parsed.Command.MaxCallTimeForAnsweredCallsMinutes
+	profile["UseMaxCallTimeForUnansweredCalls"] = parsed.Command.UseMaxCallTimeForUnansweredCalls
+	profile["MaxCallTimeForUnansweredCallsMinute"] = parsed.Command.MaxCallTimeForUnansweredCallsMinutes
+	profile["UseMaxConcurrentRedirectedCalls"] = parsed.Command.UseMaxConcurrentRedirectedCalls
+	profile["MaxConcurrentRedirectedCalls"] = parsed.Command.MaxConcurrentRedirectedCalls
+	profile["UseMaxConcurrentFindMeFollowMeInvocation"] = parsed.Command.UseMaxConcurrentFindMeFollowMeInvocations
+	profile["MaxConcurrentFindMeFollowMeInvocations"] = parsed.Command.MaxConcurrentFindMeFollowMeInvocations
+	profile["UseMaxFindMeFollowMeDepth"] = parsed.Command.UseMaxFindMeFollowMeDepth
+	profile["MaxFindMeFollowMeDepth"] = parsed.Command.MaxFindMeFollowMeDepth
+	profile["MaxRedirectionDep"] = parsed.Command.MaxRedirectionDepth
+
+	return profile
 
 }
 
@@ -333,7 +362,7 @@ func (c client) groupCallProcessingModifyPolicyRequest15Sp2() {
 }
 
 // UserCallProcessingGetPolicyRequest21Sp1 Get User
-func (c client) userCallProcessingGetPolicyRequest21Sp1(user string) string {
+func (c client) userCallProcessingGetPolicyRequest21Sp1(user string) map[string]interface{} {
 
 	data := `<command xmlns="" xsi:type="UserCallProcessingGetPolicyRequest21sp1">`
 	data += fmt.Sprintf(`<userId>%s</userId>`, user)
@@ -364,11 +393,26 @@ func (c client) userCallProcessingGetPolicyRequest21Sp1(user string) string {
 		panic(err)
 	}
 
-	return fmt.Sprintf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n", user, parsed.Command.UseUserCallLimitsSetting, parsed.Command.UseMaxSimultaneousCalls,
-		parsed.Command.MaxSimultaneousCalls, parsed.Command.UseMaxSimultaneousVideoCalls, parsed.Command.MaxSimultaneousVideoCalls, parsed.Command.UseMaxCallTimeForAnsweredCalls,
-		parsed.Command.MaxCallTimeForAnsweredCallsMinutes, parsed.Command.UseMaxCallTimeForUnansweredCalls, parsed.Command.MaxCallTimeForUnansweredCallsMinutes,
-		parsed.Command.UseMaxConcurrentRedirectedCalls, parsed.Command.MaxConcurrentRedirectedCalls, parsed.Command.UseMaxConcurrentFindMeFollowMeInvocations,
-		parsed.Command.MaxConcurrentFindMeFollowMeInvocations, parsed.Command.UseMaxFindMeFollowMeDepth, parsed.Command.MaxFindMeFollowMeDepth, parsed.Command.MaxRedirectionDepth)
+	profile := make(map[string]interface{})
+
+	profile["UseUserCallLimitsSetting"] = parsed.Command.UseUserCallLimitsSetting
+	profile["UseMaxSimultaneousCalls"] = parsed.Command.UseMaxSimultaneousCalls
+	profile["MaxSimultaneousCalls"] = parsed.Command.MaxSimultaneousCalls
+	profile["UseMaxSimultaneousVideoCalls"] = parsed.Command.UseMaxSimultaneousVideoCalls
+	profile["MaxSimultaneousVideoCalls"] = parsed.Command.MaxSimultaneousVideoCalls
+	profile["UseMaxCallTimeForAnsweredCalls"] = parsed.Command.UseMaxCallTimeForAnsweredCalls
+	profile["MaxCallTimeForAnsweredCallsMinutes"] = parsed.Command.MaxCallTimeForAnsweredCallsMinutes
+	profile["UseMaxCallTimeForUnansweredCalls"] = parsed.Command.UseMaxCallTimeForUnansweredCalls
+	profile["MaxCallTimeForUnansweredCallsMinutes"] = parsed.Command.MaxCallTimeForUnansweredCallsMinutes
+	profile["UseMaxConcurrentRedirectedCalls"] = parsed.Command.UseMaxConcurrentRedirectedCalls
+	profile["MaxConcurrentRedirectedCalls"] = parsed.Command.MaxConcurrentRedirectedCalls
+	profile["UseMaxConcurrentFindMeFollowMeInvocations"] = parsed.Command.UseMaxConcurrentFindMeFollowMeInvocations
+	profile["MaxConcurrentFindMeFollowMeInvocations"] = parsed.Command.MaxConcurrentFindMeFollowMeInvocations
+	profile["UseMaxFindMeFollowMeDepth"] = parsed.Command.UseMaxFindMeFollowMeDepth
+	profile["MaxFindMeFollowMeDepth"] = parsed.Command.MaxFindMeFollowMeDepth
+	profile["MaxRedirectionDepth"] = parsed.Command.MaxRedirectionDepth
+
+	return profile
 }
 
 // Group user list
@@ -421,7 +465,7 @@ func (c client) userCallProcessingModifyPolicyRequest14Sp7(user string, UseUserC
 	UseMaxSimultaneousVideoCalls bool, MaxSimultaneousVideoCalls int, UseMaxCallTimeForAnsweredCall bool, MaxCallTimeForAnsweredCallsMinutes int,
 	UseMaxCallTimeForUnansweredCalls bool, MaxCallTimeForUnansweredCallsMinutes int, UseMaxConcurrentRedirectedCalls bool, MaxConcurrentRedirectedCalls int,
 	UseMaxConcurrentFindMeFollowMeInvocations bool, MaxConcurrentFindMeFollowMeInvocations int, UseMaxFindMeFollowMeDepth bool, MaxFindMeFollowMeDepth int,
-	MaxRedirectionDepth int) {
+	MaxRedirectionDepth int) BroadsoftDocument {
 
 	data := `<command xmlns="" xsi:type="UserCallProcessingModifyPolicyRequest14sp7">`
 	data += fmt.Sprintf(`<userId>%v</userId>`, user)
@@ -480,7 +524,7 @@ func (c client) userCallProcessingModifyPolicyRequest14Sp7(user string, UseUserC
 		panic(err)
 	}
 
-	fmt.Printf("%v\n", parsed)
+	return parsed
 
 }
 
@@ -544,7 +588,7 @@ func (c client) GroupAccessDeviceGetListRequest(enterprise string, group string)
 }
 
 // Get a specific device profile
-func (c client) GroupAccessDeviceGetRequest18sp1(enterprise string, group string, device string) (string, string, bool, string, string) {
+func (c client) GroupAccessDeviceGetRequest18sp1(enterprise string, group string, device string) map[string]interface{} {
 
 	data := `<command xsi:type="GroupAccessDeviceGetRequest18sp1" xmlns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">`
 	data += fmt.Sprintf(`<serviceProviderId>%s</serviceProviderId>`, enterprise)
@@ -576,8 +620,29 @@ func (c client) GroupAccessDeviceGetRequest18sp1(enterprise string, group string
 		panic(err)
 	}
 
-	//return fmt.Sprintf("%v,%v,%v,%v,%v,%v,", parsed.Command.DeviceType, device, parsed.Command.MacAddress, parsed.Command.UseCustomUserNamePassword, parsed.Command.UserName, parsed.Command.Version)
-	return parsed.Command.DeviceType, parsed.Command.MacAddress, parsed.Command.UseCustomUserNamePassword, parsed.Command.UserName, parsed.Command.Version
+	profile := make(map[string]interface{})
+
+	profile["deviceType"] = parsed.Command.DeviceType
+	profile["protocol"] = parsed.Command.Protocol
+	profile["netAddress"] = parsed.Command.NetAddress
+	profile["port"] = parsed.Command.Port
+	profile["outboundProxyServerNetAddress"] = parsed.Command.OutboundProxyServerNetAddress
+	profile["stunServerNetAddress"] = parsed.Command.StunServerNetAddress
+	profile["macAddress"] = parsed.Command.MacAddress
+	profile["serialNumber"] = parsed.Command.SerialNumber
+	profile["description"] = parsed.Command.Description
+	profile["numberOfPorts"] = parsed.Command.NumberOfPorts
+	profile["quantity"] = parsed.Command.NumberOfPorts.Quantity
+	profile["numberOfAssignedPorts"] = parsed.Command.NumberOfAssignedPorts
+	profile["status"] = parsed.Command.Status
+	profile["configurationMode"] = parsed.Command.ConfigurationMode
+	profile["physicalLocation"] = parsed.Command.PhysicalLocation
+	profile["transportProtocol"] = parsed.Command.TransportProtocol
+	profile["useCustomUserNamePassword"] = parsed.Command.UseCustomUserNamePassword
+	profile["userName"] = parsed.Command.UserName
+	profile["version"] = parsed.Command.Version
+
+	return profile
 
 }
 
@@ -699,7 +764,7 @@ func (c client) SystemAccessDeviceGetAllRequest(deviceType string) [][]string {
 	return devices
 }
 
-func (c client) UserCallForwardingAlwaysGetRequest(user string) (string, bool, bool, string) {
+func (c client) UserCallForwardingAlwaysGetRequest(user string) map[string]interface{} {
 
 	data := `<command xmlns="" xsi:type="UserCallForwardingAlwaysGetRequest">`
 	data += fmt.Sprintf(`<userId>%v</userId>`, user)
@@ -729,13 +794,24 @@ func (c client) UserCallForwardingAlwaysGetRequest(user string) (string, bool, b
 		panic(err)
 	}
 
+	cfaSettings := make(map[string]interface{})
+
 	// user, serviceAssigned, isActive, ForwardToPhoneNumber
 	if parsed.Command.RType == "c:ErrorResponse" {
 		if strings.Contains(parsed.Command.SummaryEnglish, "[Error 4410]") {
-			return user, false, false, ""
+			cfaSettings["serviceAssigned"] = false
+			cfaSettings["isActive"] = false
+			cfaSettings["forwardToNumber"] = ""
+		} else {
+			cfaSettings["serviceAssigned"] = false
+			cfaSettings["isActive"] = false
+			cfaSettings["forwardToNumber"] = ""
 		}
-		return user, false, false, ""
 	}
 
-	return user, true, parsed.Command.IsActive, parsed.Command.ForwardToPhoneNumber
+	cfaSettings["serviceAssigned"] = true
+	cfaSettings["isActive"] = parsed.Command.IsActive
+	cfaSettings["forwardToPhoneNumber"] = parsed.Command.ForwardToPhoneNumber
+
+	return cfaSettings
 }
