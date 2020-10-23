@@ -36,6 +36,20 @@ type client struct {
 	hash       string
 }
 
+// Config file setup
+type Config struct {
+	Production struct {
+		URL      string `yaml:"url"`
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
+	} `yaml:"production"`
+	Lab struct {
+		URL      string `yaml:"url"`
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
+	} `yaml:"lab"`
+}
+
 // SendRequest to OCI-P Interface
 func (c *client) sendRequest(message string) ([]byte, int) {
 
@@ -95,20 +109,6 @@ func (c *client) sendRequest(message string) ([]byte, int) {
 
 func (c *client) makeConfig(path string) {
 
-	// Config file setup
-	type Config struct {
-		Production struct {
-			URL      string `yaml:"url"`
-			Username string `yaml:"username"`
-			Password string `yaml:"password"`
-		} `yaml:"production"`
-		Lab struct {
-			URL      string `yaml:"url"`
-			Username string `yaml:"username"`
-			Password string `yaml:"password"`
-		} `yaml:"lab"`
-	}
-
 	config := &Config{}
 	file, err := os.Open("config.yml")
 	if err != nil {
@@ -128,19 +128,6 @@ func main() {
 
 	// Removes timestamp from error output
 	log.SetFlags(0)
-	// Config file setup
-	type Config struct {
-		Production struct {
-			URL      string `yaml:"url"`
-			Username string `yaml:"username"`
-			Password string `yaml:"password"`
-		} `yaml:"production"`
-		Lab struct {
-			URL      string `yaml:"url"`
-			Username string `yaml:"username"`
-			Password string `yaml:"password"`
-		} `yaml:"lab"`
-	}
 
 	config := &Config{}
 	file, err := os.Open("config.yml")
@@ -248,10 +235,24 @@ func main() {
 
 					// Print header if flagged
 					if c.Bool("header") {
-						fmt.Println("userId,useUserCallLimitsSetting,useMaxSimultaneousCalls,maxSimultaneousCalls,useMaxSimultaneousVideoCalls," +
-							"maxSimultaneousVideoCalls,useMaxCallTimeForAnsweredCalls,maxCallTimeForAnsweredCallsMinutes,useMaxCallTimeForUnansweredCalls," +
-							"maxCallTimeForUnansweredCallsMinutes,useMaxConcurrentRedirectedCalls,maxConcurrentRedirectedCalls,useMaxFindMeFollowMeDepth," +
-							"maxFindMeFollowMeDepth,maxRedirectionDepth,useMaxConcurrentFindMeFollowMeInvocations,maxConcurrentFindMeFollowMeInvocations",
+						fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+							"userId",
+							"useUserCallLimitsSetting",
+							"useMaxSimultaneousCalls",
+							"maxSimultaneousCalls",
+							"useMaxSimultaneousVideoCalls",
+							"maxSimultaneousVideoCalls",
+							"useMaxCallTimeForAnsweredCalls",
+							"maxCallTimeForAnsweredCallsMinutes",
+							"useMaxCallTimeForUnansweredCalls",
+							"maxCallTimeForUnansweredCallsMinutes",
+							"useMaxConcurrentRedirectedCalls",
+							"maxConcurrentRedirectedCalls",
+							"useMaxFindMeFollowMeDepth",
+							"maxFindMeFollowMeDepth",
+							"maxRedirectionDepth",
+							"useMaxConcurrentFindMeFollowMeInvocations",
+							"maxConcurrentFindMeFollowMeInvocations",
 						)
 					}
 
@@ -545,7 +546,14 @@ func main() {
 						}
 
 						if c.Bool("header") {
-							fmt.Println("deviceType,deviceName,macAddress,useCustomUserNamePassword,UserName,version")
+							fmt.Printf("%v,%v,%v,%v,%v,%v\n",
+								"deviceType",
+								"deviceName",
+								"macAddress",
+								"useCustomUserNamePassword",
+								"UserName",
+								"version",
+							)
 						}
 
 						for i := 0; i < len(devices); i++ {
