@@ -107,23 +107,6 @@ func (c *client) sendRequest(message string) ([]byte, int) {
 
 }
 
-func (c *client) makeConfig(path string) {
-
-	config := &Config{}
-	file, err := os.Open("config.yml")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer file.Close()
-
-	d := yaml.NewDecoder(file)
-	if err := d.Decode(&config); err != nil {
-		log.Fatal(err)
-	}
-
-}
-
 func main() {
 
 	// Removes timestamp from error output
