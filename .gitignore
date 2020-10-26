@@ -1,5 +1,7 @@
 *.csv
 *.yml
+*.zip
+*.exe
 backups/
 output/
 
