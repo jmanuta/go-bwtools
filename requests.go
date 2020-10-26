@@ -246,6 +246,42 @@ func (c *client) loginRequest14sp4() error {
 	return nil
 }
 
+func (c *client) UserAuthenticationGetRequest(user string) string {
+	//data := `<command xsi:type="UserAuthenticationGetRequest" xmlns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">`
+	data := `<command xsi:type="UserAuthenticationGetRequest" xmlns="">`
+	data += fmt.Sprintf(`<userId>%v</userId>`, user)
+	data += `</command>`
+
+	// Send the message
+	body, _ := c.sendRequest(html.EscapeString(data))
+
+	// Create the object to store the OCI response
+	var resp SOAPEnvelope
+	if err := xml.Unmarshal(body, &resp); err != nil {
+		panic(fmt.Sprintf("Issue unmarshalling SOAPEnvelope: %s", err))
+	}
+
+	// Create instance to store data
+	var parsed BroadsoftDocument
+
+	// Create reader for data in message return
+	reader := bytes.NewReader([]byte(resp.SOAPBody.ProcessOCIMessageResponse.ProcessOCIMessageReturn))
+
+	// Use the NewDecoder on the reader and store
+	decoder := xml.NewDecoder(reader)
+
+	// Set the Charset on the decoder
+	decoder.CharsetReader = charset.NewReaderLabel
+
+	// Write the decorder to the parsed instance
+	if err := decoder.Decode(&parsed); err != nil {
+		panic(err)
+	}
+
+	return parsed.Command.UserName
+
+}
+
 // ServiceProviderCallProcessingGetPolicyRequest21Sp1 Get Enterprise1
 func (c client) serviceProviderCallProcessingGetPolicyRequest21Sp1(enterprise string) map[string]interface{} {
 
