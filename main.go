@@ -127,7 +127,7 @@ func main() {
 
 	app := &cli.App{
 		Name:    "BWTools",
-		Version: "v1.1.0",
+		Version: "v1.2.0",
 		Usage:   "Broadworks OCI-P Testing",
 		Authors: []*cli.Author{
 			&cli.Author{
@@ -447,7 +447,7 @@ func main() {
 						// print header if flagged
 						if c.Bool("header") {
 							if c.Bool("detail") {
-								fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+								fmt.Printf("%v,%v,%v,%v,%v,%q,%v,%v,%v,%v,%v,%v\n",
 									"deviceType",
 									"deviceName",
 									"macAddress",
@@ -462,7 +462,7 @@ func main() {
 									"extension",
 								)
 							} else {
-								fmt.Printf("%v,%v,%v,%v,%v,%v\n",
+								fmt.Printf("%v,%v,%v,%v,%v,%q\n",
 									"deviceType",
 									"deviceName",
 									"macAddress",
@@ -489,7 +489,7 @@ func main() {
 
 								// retrieve lines information
 								lines := cl.GroupAccessDeviceGetUserListRequest21sp1(c.String("enterprise"), c.String("group"), deviceName)
-								fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v\n",
+								fmt.Printf("%v,%v,%v,%v,%v,%q,%v,%v,%v,%v,%v,%v\n",
 									deviceType,
 									deviceName,
 									macAddress,
@@ -506,7 +506,7 @@ func main() {
 
 							} else {
 
-								fmt.Printf("%v,%v,%v,%v,%v,%v\n",
+								fmt.Printf("%v,%v,%v,%v,%v,%q\n",
 									deviceType,
 									deviceName,
 									macAddress,
@@ -529,7 +529,7 @@ func main() {
 						}
 
 						if c.Bool("header") {
-							fmt.Printf("%v,%v,%v,%v,%v,%v\n",
+							fmt.Printf("%v,%v,%v,%v,%v,%q\n",
 								"deviceType",
 								"deviceName",
 								"macAddress",
@@ -669,6 +669,82 @@ func main() {
 						)
 					}
 					return nil
+				},
+			},
+			{
+				Name:  "sip-auth",
+				Usage: "show the sip-authentication username for each user in the specified group",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:     "enterprise",
+						Aliases:  []string{"e"},
+						Usage:    "enteprise ID",
+						Required: true,
+					},
+					&cli.StringFlag{
+						Name:     "group",
+						Aliases:  []string{"g"},
+						Usage:    "group ID",
+						Required: true,
+					},
+					&cli.BoolFlag{
+						Name:  "header",
+						Usage: "show output headers",
+						Value: false,
+					},
+				},
+				Action: func(c *cli.Context) error {
+
+					// Get a session ID
+					sID := func() string {
+						l := 20 // length
+						buff := make([]byte, int(math.Round(float64(l)/float64(1.33333333333))))
+						rand.Read(buff)
+						str := base64.RawURLEncoding.EncodeToString(buff)
+						return str[:l] // strip 1 extra character we get from odd length results
+					}()
+
+					// Create an instance of client
+					cl := &client{
+						username:  config.Production.Username,
+						password:  config.Production.Password,
+						baseURL:   config.Production.URL,
+						sessionID: sID,
+					}
+
+					// Check if lab flag is set
+					if c.Bool("lab") {
+						cl = &client{
+							username:  config.Lab.Username,
+							password:  config.Lab.Password,
+							baseURL:   config.Lab.URL,
+							sessionID: sID,
+						}
+					}
+
+					// Authenticate
+					if err := cl.authenticationRequest(); err != nil {
+						log.Fatal(err)
+					}
+
+					// Login
+					if err := cl.loginRequest14sp4(); err != nil {
+						log.Fatal(err)
+					}
+
+					if c.Bool("header") {
+						fmt.Printf("%v,%v\n",
+							"userID",
+							"authID",
+						)
+					}
+					users := cl.UserGetListInGroupRequest(c.String("enterprise"), c.String("group"))
+					for i := 0; i < len(users); i++ {
+						authID := cl.UserAuthenticationGetRequest(users[i])
+						fmt.Printf("%v,%v\n", users[i], authID)
+					}
+					return nil
+
 				},
 			},
 		},
