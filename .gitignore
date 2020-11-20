@@ -2,6 +2,7 @@
 *.yml
 *.zip
 *.exe
+bwtools
 backups/
 output/
 
