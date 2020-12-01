@@ -112,12 +112,13 @@ func main() {
 	// Removes timestamp from error output
 	log.SetFlags(0)
 
+	// Create instance to store values from config file
 	config := &Config{}
+
 	file, err := os.Open("config.yml")
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer file.Close()
 
 	d := yaml.NewDecoder(file)
@@ -139,10 +140,6 @@ func main() {
 				Name:    "lab",
 				Aliases: []string{"l"},
 				Usage:   "send request to lab broadworks",
-			},
-			&cli.BoolFlag{
-				Name:  "header",
-				Usage: "show column headers",
 			},
 		},
 		Commands: []*cli.Command{
@@ -175,7 +172,7 @@ func main() {
 				Action: func(c *cli.Context) error {
 
 					// Generate a pseudo random sessionID
-					sID := func() string {
+					SID := func() string {
 						l := 20 // length
 						buff := make([]byte, int(math.Round(float64(l)/float64(1.33333333333))))
 						rand.Read(buff)
@@ -188,7 +185,7 @@ func main() {
 						username:  config.Production.Username,
 						password:  config.Production.Password,
 						baseURL:   config.Production.URL,
-						sessionID: sID,
+						sessionID: SID,
 					}
 
 					// Check if lab flag is set
@@ -197,7 +194,7 @@ func main() {
 							username:  config.Lab.Username,
 							password:  config.Lab.Password,
 							baseURL:   config.Lab.URL,
-							sessionID: sID,
+							sessionID: SID,
 						}
 					}
 
@@ -387,7 +384,7 @@ func main() {
 				Action: func(c *cli.Context) error {
 
 					// Generate a pseudo random sessionID
-					sID := func() string {
+					SID := func() string {
 						l := 20 // length
 						buff := make([]byte, int(math.Round(float64(l)/float64(1.33333333333))))
 						rand.Read(buff)
@@ -412,7 +409,7 @@ func main() {
 						username:  config.Production.Username,
 						password:  config.Production.Password,
 						baseURL:   config.Production.URL,
-						sessionID: sID,
+						sessionID: SID,
 					}
 
 					// Check if lab flag is set
@@ -421,7 +418,7 @@ func main() {
 							username:  config.Lab.Username,
 							password:  config.Lab.Password,
 							baseURL:   config.Lab.URL,
-							sessionID: sID,
+							sessionID: SID,
 						}
 					}
 
@@ -575,7 +572,7 @@ func main() {
 					},
 				},
 				Action: func(c *cli.Context) error {
-					sID := func() string {
+					SID := func() string {
 						l := 20 // length
 						buff := make([]byte, int(math.Round(float64(l)/float64(1.33333333333))))
 						rand.Read(buff)
@@ -588,7 +585,7 @@ func main() {
 						username:  config.Production.Username,
 						password:  config.Production.Password,
 						baseURL:   config.Production.URL,
-						sessionID: sID,
+						sessionID: SID,
 					}
 
 					// Check if lab flag is set
@@ -597,7 +594,7 @@ func main() {
 							username:  config.Lab.Username,
 							password:  config.Lab.Password,
 							baseURL:   config.Lab.URL,
-							sessionID: sID,
+							sessionID: SID,
 						}
 					}
 
@@ -628,14 +625,14 @@ func main() {
 					if c.Bool("active") {
 						for i := 0; i < len(users); i++ {
 
-							cfaSettings := cl.UserCallForwardingAlwaysGetRequest(users[i])
+							CFASettings := cl.UserCallForwardingAlwaysGetRequest(users[i])
 
 							// Create objx to convert some values to bool
-							o := objx.New(cfaSettings)
+							o := objx.New(CFASettings)
 
 							serviceAssigned := o.Get("serviceAssigned").Bool()
 							isActive := o.Get("isActive").Bool()
-							forwardToPhoneNumber := cfaSettings["forwardToPhoneNumber"]
+							forwardToPhoneNumber := CFASettings["forwardToPhoneNumber"]
 							user := users[i]
 
 							if isActive {
@@ -652,13 +649,13 @@ func main() {
 
 					for i := 0; i < len(users); i++ {
 
-						cfaSettings := cl.UserCallForwardingAlwaysGetRequest(users[i])
+						CFASettings := cl.UserCallForwardingAlwaysGetRequest(users[i])
 
-						o := objx.New(cfaSettings)
+						o := objx.New(CFASettings)
 
 						serviceAssigned := o.Get("serviceAssigned").Bool()
 						isActive := o.Get("isActive").Bool()
-						forwardToPhoneNumber := cfaSettings["forwardToPhoneNumber"]
+						forwardToPhoneNumber := CFASettings["forwardToPhoneNumber"]
 						user := users[i]
 
 						fmt.Printf("%v,%v,%v,%v\n",
@@ -696,7 +693,7 @@ func main() {
 				Action: func(c *cli.Context) error {
 
 					// Get a session ID
-					sID := func() string {
+					SID := func() string {
 						l := 20 // length
 						buff := make([]byte, int(math.Round(float64(l)/float64(1.33333333333))))
 						rand.Read(buff)
@@ -709,7 +706,7 @@ func main() {
 						username:  config.Production.Username,
 						password:  config.Production.Password,
 						baseURL:   config.Production.URL,
-						sessionID: sID,
+						sessionID: SID,
 					}
 
 					// Check if lab flag is set
@@ -718,7 +715,7 @@ func main() {
 							username:  config.Lab.Username,
 							password:  config.Lab.Password,
 							baseURL:   config.Lab.URL,
-							sessionID: sID,
+							sessionID: SID,
 						}
 					}
 
