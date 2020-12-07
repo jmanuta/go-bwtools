@@ -107,24 +107,35 @@ func (c *client) sendRequest(message string) ([]byte, int) {
 
 }
 
-func main() {
+func loadConfig(f string) *Config {
 
-	// Removes timestamp from error output
-	log.SetFlags(0)
-
-	// Create instance to store values from config file
+	// Create empty struct to hold data
 	config := &Config{}
 
-	file, err := os.Open("config.yml")
+	// Read the specified file
+	file, err := os.Open(f)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
+	// Decode the file as yaml and Unmarshal to config struct
 	d := yaml.NewDecoder(file)
 	if err := d.Decode(&config); err != nil {
 		log.Fatal(err)
 	}
+
+	// Return the struct
+	return config
+}
+
+func main() {
+
+	// Removes timestamp from error output
+	log.SetFlags(0)
+
+	// Load config file
+	config := loadConfig("config.yml")
 
 	app := &cli.App{
 		Name:    "BWTools",
@@ -747,7 +758,7 @@ func main() {
 		},
 	}
 
-	err = app.Run(os.Args)
+	err := app.Run(os.Args)
 	if err != nil {
 		log.Fatal(fmt.Printf("\n%v\n", err))
 	}
